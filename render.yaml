@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: bengali-text-to-audio
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /
+    envVars:
+      - key: SARVAM_API_KEY
+        sync: false

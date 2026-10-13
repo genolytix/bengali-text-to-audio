@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5ef">
+  <title>Bengali Text to Audio</title>
+  <style>
+    :root { color-scheme: light; --ink:#202321; --muted:#626b65; --paper:#f8f5ef; --card:#fffefa; --line:#deded4; --green:#176b52; --green-dark:#10513e; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--paper); color:var(--ink); min-height:100vh; }
+    .top { border-bottom:1px solid var(--line); background:rgba(255,254,250,.85); }
+    .nav { max-width:1080px; margin:auto; padding:18px 22px; display:flex; gap:12px; align-items:center; font-weight:750; letter-spacing:-.02em; }
+    .mark { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:var(--green); color:white; font-size:20px; }
+    main { max-width:920px; margin:0 auto; padding:54px 22px 64px; }
+    .eyebrow { color:var(--green); font-size:12px; text-transform:uppercase; letter-spacing:.16em; font-weight:800; }
+    h1 { font-size:clamp(36px,6vw,60px); letter-spacing:-.055em; line-height:1.04; margin:14px 0 18px; max-width:740px; }
+    .intro { color:var(--muted); font-size:17px; line-height:1.7; max-width:650px; margin-bottom:32px; }
+    .layout { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(220px,.8fr); gap:20px; align-items:start; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px; box-shadow:0 12px 32px rgba(42,46,38,.045); }
+    h2 { font-size:18px; margin:0 0 7px; letter-spacing:-.02em; }
+    .sub { color:var(--muted); font-size:14px; line-height:1.55; margin:0 0 22px; }
+    .drop { border:1.5px dashed #aab8ad; background:#f8faf6; border-radius:15px; padding:24px 18px; text-align:center; }
+    .file-icon { font-size:28px; margin-bottom:8px; }
+    .drop strong { display:block; font-size:15px; }
+    .drop p { font-size:13px; color:var(--muted); margin:7px 0 14px; }
+    input[type=file] { width:100%; max-width:100%; font-size:13px; }
+    label { display:block; font-size:13px; font-weight:700; margin:20px 0 8px; }
+    select { width:100%; padding:12px 13px; border:1px solid var(--line); border-radius:10px; background:white; color:var(--ink); font:inherit; }
+    button { margin-top:22px; width:100%; border:0; border-radius:11px; background:var(--green); color:white; font-size:15px; font-weight:750; padding:15px 18px; cursor:pointer; transition:background .2s,transform .2s; }
+    button:hover { background:var(--green-dark); transform:translateY(-1px); }
+    button:disabled { opacity:.6; cursor:wait; transform:none; }
+    .status { display:none; margin-top:16px; padding:13px 14px; border-radius:10px; font-size:14px; line-height:1.5; overflow-wrap:anywhere; }
+    .status.show { display:block; }
+    .status.error { background:#fff0ed; color:#8e2b1b; border:1px solid #f1c6bd; }
+    .status.success { background:#edf7f0; color:#1a6546; border:1px solid #c4e3d0; }
+    .side { background:#eaf1e9; border-color:#d7e2d5; }
+    .side h2 { margin-bottom:16px; }
+    .step { display:flex; gap:12px; margin:16px 0; }
+    .num { flex:0 0 28px; height:28px; border-radius:9px; display:grid; place-items:center; background:white; color:var(--green); font-size:12px; font-weight:800; }
+    .step strong { display:block; font-size:14px; margin:2px 0 4px; }
+    .step p { margin:0; font-size:13px; color:#536258; line-height:1.5; }
+    .privacy { margin-top:22px; color:var(--muted); font-size:12px; line-height:1.6; }
+    footer { border-top:1px solid var(--line); padding:20px; text-align:center; font-size:12px; color:var(--muted); }
+    @media(max-width:700px) { main { padding-top:38px; } .layout { grid-template-columns:1fr; } .card { padding:21px; } }
+  </style>
+</head>
+<body>
+  <header class="top"><div class="nav"><div class="mark">অ</div><span>Bengali Text to Audio</span></div></header>
+  <main>
+    <div class="eyebrow">Bengali text · Speech · WAV</div>
+    <h1>Give your Bengali text a voice.</h1>
+    <p class="intro">Upload a UTF-8 text file and turn it into spoken Bengali audio. Your finished WAV file will be ready to download right here.</p>
+    <div class="layout">
+      <section class="card">
+        <h2>Convert your text</h2>
+        <p class="sub">Choose a plain-text <strong>.txt</strong> file. Maximum upload size: 5 MB.</p>
+        <form id="convert-form">
+          <div class="drop">
+            <div class="file-icon">📄</div>
+            <strong>Choose your Bengali text file</strong>
+            <p>UTF-8 encoding recommended</p>
+            <input id="text-file" type="file" name="text_file" accept=".txt,text/plain" required>
+          </div>
+          <label for="speaker">Voice</label>
+          <select id="speaker" name="speaker">
+            <option value="shreya" selected>Shreya</option>
+            <option value="meera">Meera</option>
+            <option value="arvind">Arvind</option>
+            <option value="manisha">Manisha</option>
+            <option value="vidya">Vidya</option>
+            <option value="arya">Arya</option>
+          </select>
+          <button id="submit-button" type="submit">Convert to Audio</button>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </form>
+        <p class="privacy">Your text is processed by the server and sent to Sarvam AI for speech generation. The app does not intentionally save the uploaded text or generated audio on the server.</p>
+      </section>
+      <aside class="card side">
+        <h2>How it works</h2>
+        <div class="step"><div class="num">01</div><div><strong>Upload a TXT file</strong><p>Use Bengali text saved in UTF-8 format.</p></div></div>
+        <div class="step"><div class="num">02</div><div><strong>Choose a voice</strong><p>Select a voice option supported by the configured Sarvam model.</p></div></div>
+        <div class="step"><div class="num">03</div><div><strong>Convert</strong><p>The server sends text in smaller chunks to the text-to-speech API.</p></div></div>
+        <div class="step"><div class="num">04</div><div><strong>Download WAV</strong><p>Your browser downloads the combined audio file when processing finishes.</p></div></div>
+      </aside>
+    </div>
+  </main>
+  <footer>Powered by Sarvam AI · Keep your API key private</footer>
+  <script>
+    const form = document.getElementById("convert-form");
+    const button = document.getElementById("submit-button");
+    const statusBox = document.getElementById("status");
+    const fileInput = document.getElementById("text-file");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      statusBox.className = "status";
+      statusBox.textContent = "";
+
+      const file = fileInput.files[0];
+      if (!file) {
+        statusBox.className = "status show error";
+        statusBox.textContent = "Please choose a .txt file first.";
+        return;
+      }
+      if (!file.name.toLowerCase().endsWith(".txt")) {
+        statusBox.className = "status show error";
+        statusBox.textContent = "Please upload a file with the .txt extension.";
+        return;
+      }
+
+      const originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = "Converting… please wait";
+      statusBox.className = "status show";
+      statusBox.textContent = "Your audio is being generated. Long files may take a few minutes.";
+
+      try {
+        const response = await fetch("/convert", { method: "POST", body: new FormData(form) });
+        if (!response.ok) {
+          let message = "Conversion failed. Please try again.";
+          try {
+            const data = await response.json();
+            if (data.error) message = data.error;
+          } catch (_) {}
+          throw new Error(message);
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "bengali_audio.wav";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        statusBox.className = "status show success";
+        statusBox.textContent = "Conversion complete. Your WAV download should have started.";
+      } catch (error) {
+        statusBox.className = "status show error";
+        statusBox.textContent = error.message || "Something went wrong.";
+      } finally {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  </script>
+</body>
+</html>
