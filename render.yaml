@@ -6,5 +6,5 @@ services:
     startCommand: gunicorn app:app
     healthCheckPath: /
     envVars:
-      - key: SARVAM_API_KEY
+      - key: sk_wpjyg7ep_QzQ5R4nrXIkRa14uhYporpgB
         sync: false
