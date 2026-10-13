@@ -57,7 +57,7 @@ def split_text(text, max_chars=MAX_CHARS_PER_CHUNK):
 
 
 def make_audio(text, speaker=DEFAULT_SPEAKER):
-    api_key = os.environ.get("SARVAM_API_KEY")
+    api_key = os.environ.get("sk_wpjyg7ep_QzQ5R4nrXIkRa14uhYporpgB")
     if not api_key:
         raise RuntimeError(
             "The server is missing SARVAM_API_KEY. Add it to your hosting "
