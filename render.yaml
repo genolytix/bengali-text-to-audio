@@ -7,4 +7,4 @@ services:
     healthCheckPath: /
     envVars:
       - key: sk_wpjyg7ep_QzQ5R4nrXIkRa14uhYporpgB
-        sync: false
+        sync: true
