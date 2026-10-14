@@ -11,9 +11,9 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # 5 MB upload limit
 
 MAX_CHARS_PER_CHUNK = 2000
-DEFAULT_MODEL = "bulbul:v3"
+DEFAULT_MODEL = "bulbul:v4-flash"
 DEFAULT_LANGUAGE = "bn-IN"
-DEFAULT_SPEAKER = "shreya"
+DEFAULT_SPEAKER = "roopa_bn_conversational"
 
 
 def split_text(text, max_chars=MAX_CHARS_PER_CHUNK):
