@@ -7,6 +7,7 @@ services:
     healthCheckPath: /
     envVars:
       - key: SARVAM_API_KEY
+        value: sk_wpjyg7ep_QzQ5R4nrXIkRa14uhYporpgB
         sync: false
       - key: PYTHON_VERSION
         value: 3.11.9
