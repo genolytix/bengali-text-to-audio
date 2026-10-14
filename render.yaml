@@ -2,12 +2,8 @@ services:
   - type: web
     name: bengali-text-to-audio
     runtime: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
-    healthCheckPath: /
     envVars:
-      - key: SARVAM_API_KEY
-        value: sk_wpjyg7ep_QzQ5R4nrXIkRa14uhYporpgB
-        
-      - key: PYTHON_VERSION
-        value: 3.11.9
+      - fromGroup: sarvam-secrets
